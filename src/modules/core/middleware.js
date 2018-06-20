@@ -49,49 +49,30 @@ export function requestUtilsMiddleware() {
 
 // eslint-disable-next-line no-unused-vars
 export function apiResponse() {
-  return (req, res, next) => {
-    const response = {};
-    // response.meta = {};
-
-    const defaultResponse = (code, status, message, data, meta) => {
-      const output = {
-        code,
-        status,
-        message,
-        meta,
-        data,
-      };
-      res.APIResponse = output;
-      return output;
-    };
-
-    /**
-     * Add API success responder
-     * @param {string} message
-     * @param {object} data, returned data
-     * @param {object} meta, meta data
-     */
-    response.success = (message, data = {}, meta = {}) =>
-      res.status(200).json(defaultResponse(200, true, message, data, meta));
-
-    /**
-     * Add API error responder
-     * @param {object} error, error object data
-     */
-    response.error = (error) => {
-      const { httpStatus = 406, message = 'Error', previousError = error } = error;
-      delete previousError.httpStatus;
-      delete previousError.message;
-      return res.status(httpStatus)
-        .json(defaultResponse(httpStatus, false, message, previousError, {}));
-    };
-
-    res.API = response;
-    next();
+  return (req, res) => {
+    const code = res.statusCode;
+    const { status = true, meta, input, link, data = {} } = req.resData || {};
+    if (input) {
+      data.input = Object.keys(input).map(name => ({ name, val: input[name] }));
+      data.link = link;
+    }
+    return res.json({
+      code,
+      status,
+      meta,
+      data,
+    });
   };
 }
 
-export function apiErrorResponse() {
-  // eslint-disable-next-line no-unused-vars
-  return (err, req, res, next) => res.API.error(err);
-}
+export const errorFlash = () => (err, req, res, next) => {
+  const { type, redirect, alert, msg } = err;
+  if (type === 'json') {
+    const msg2 = Array.isArray(msg) ? msg.join(', ') : msg;
+    return res.status(400).json({ msg: msg2, alert });
+  }
+  if (!alert) console.log('util', err);
+  if (!alert) return res.render('core/views/errors/500');
+  req.flash(alert, msg);
+  return res.redirect(redirect);
+};

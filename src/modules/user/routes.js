@@ -1,42 +1,24 @@
 import express from 'express';
-import { validateLogin, jwtAuth, loginAuth } from './middleware';
+import { auth, noUser } from './middleware';
 import { UserController } from './controller';
 import core from '../core';
 
 const routes = express.Router();
 const { wrap } = core.utils;
 
-/**
- * POST /login
- * Authenticate user
- */
-routes.post('/users/login',
-  validateLogin(),
-  loginAuth(),
-  wrap(UserController.getUser));
+routes.get('/',
+  auth(),
+  UserController.dashboard);
 
-/**
- * GET /profile/:id*?
- * View user profile
- */
-routes.get('/users/:id*?',
-  jwtAuth(),
-  wrap(UserController.getUser));
+routes.get('/logout',
+  UserController.logout);
 
-/**
- * POST /users/login
- * Login User
- */
-routes.post('/users/login',
-  validateLogin(),
-  jwtAuth(),
-  wrap(UserController.getUser));
+routes.get('/login',
+  noUser(),
+  UserController.loginForm);
 
-/**
- * POST /forgot
- * Send reset password link
- */
-routes.post('/users/forgot',
-  wrap(UserController.forgotPassword));
+routes.post('/login',
+  UserController.login);
 
 export default routes;
+

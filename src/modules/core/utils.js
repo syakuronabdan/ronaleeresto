@@ -54,3 +54,5 @@ export function formatError(field, msg) {
   const data = formatSingularErr(field, this[msg]);
   return new BadRequestError(this[msg], data);
 }
+
+export const error = (flashType, msg, { redirect = 'back', type = 'html' } = {}) => ({ alert: flashType, msg, redirect, type });

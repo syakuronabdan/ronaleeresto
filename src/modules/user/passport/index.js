@@ -1,6 +1,5 @@
 import passport from 'passport';
 import local from './strategy/local';
-import jwt from './strategy/jwt';
 import { User } from '../model';
 
 function configure(app) {
@@ -10,7 +9,6 @@ function configure(app) {
     .fetch()
     .then(user => done(null, user.toJSON())));
   passport.use('local-login', local);
-  passport.use('jwt', jwt);
 
   // add passport middleware
   app.use(passport.initialize());

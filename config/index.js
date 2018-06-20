@@ -9,8 +9,12 @@ process.env.NODE_ENV = def.env;
 
 def.debug = true;
 def.https = false;
+def.cookie_expires = 3600 * 48 * 1000; // 2 days
 def.host = 'localhost';
 def.port = 4000;
+
+// session secret
+def.secret = 'project';
 
 // sequelize config
 def.sequelize = {};
@@ -29,7 +33,7 @@ def.cachePath = path.join(rootDir, 'cache');
 def.tempPath = path.join(rootDir, 'temp');
 def.logPath = path.join(rootDir, 'logs/log');
 def.imagePath = path.join(rootDir, 'public/image');
-def.logPath = path.join(rootDir, 'logs/log');
+def.loginPath = '/login';
 
 def.cdnPath = 'http://cdn.localhost.com';
 

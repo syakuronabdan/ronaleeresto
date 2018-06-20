@@ -1,0 +1,67 @@
+extends ../../core/views/layouts/default.pug
+
+include ../../core/views/mixins/_alert.pug
+include ../../core/views/mixins/_select2.pug
+
+block head
+  +select2Css()
+
+block content
+  .row
+    .col-md-12
+      .card
+        .card-header Search Page
+        .card-body.d-flex.align-content-center.flex-wrap(style='height: 400px;')
+          +alert(flashes)
+          form.col-md-12(method='get' action='/people')
+            .form-group
+              .input-group.d-flex
+                .input-group-btn
+                  button#selector.input-group-addon.dropdown-toggle(type='button' data-toggle='dropdown' aria-expanded='false') People
+                  .dropdown-menu
+                    a#company.dropdown-item Company
+                    a#people.dropdown-item People
+                    a#pipeline.dropdown-item Pipeline
+                input#search-bar.form-control(type='text' name='q')
+                select.d-none.form-control#search-select(name='countries[]' multiple='multiple')
+                .input-group-btn
+                  button.input-group-addon(type='submit')
+                    i.fa.fa-search.mr-1
+                    | Search
+
+block script
+  +select2Js()
+  script.
+    $('#company').click(function () {
+      $('#selector').html('Company');
+      $('form').attr('action', '/companies');
+      var $searchBar = $('#search-bar');
+      var $searchSelect = $('#search-select');
+      $searchBar.attr('name', 'q');
+      $searchBar.removeClass('d-none');
+      $searchSelect.addClass('d-none');
+      $searchSelect.select2('destroy');
+      $searchSelect.attr('name', '');
+    });
+    $('#people').click(function () {
+      $('#selector').html('People');
+      $('form').attr('action', '/people');
+      var $searchBar = $('#search-bar');
+      var $searchSelect = $('#search-select');
+      $searchBar.attr('name', 'q');
+      $searchBar.removeClass('d-none');
+      $searchSelect.addClass('d-none');
+      $searchSelect.select2('destroy');
+      $searchSelect.attr('name', '');
+    });
+    $('#pipeline').click(function () {
+      $('#selector').html('Pipeline');
+      $('form').attr('action', '/pipelines');
+      var $searchBar = $('#search-bar');
+      var $searchSelect = $('#search-select');
+      $searchBar.addClass('d-none');
+      $searchBar.attr('name', '');
+      $searchSelect.removeClass('d-none');
+      $searchSelect.attr('name', 'countries[]');
+      $searchSelect.select2(opt('/api/companies', 'Search Company..'));
+    });

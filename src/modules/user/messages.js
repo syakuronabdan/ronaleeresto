@@ -1,30 +1,22 @@
-import core from '../core';
-
-const { formatError } = core.utils;
-
-export const errMsg = {
-  loginMsg: {
-    title: 'Login gagal',
-    wrong_password: 'Email atau password yang kamu masukkan salah, silahkan coba lagi',
-    bad_request: 'Bad request',
-    password_presence: '^Password harus diisi',
-    email_presence: '^Email harus diisi',
-    email_not_valid: '^Email tidak valid',
-    email_not_found: 'Email tidak terdaftar',
-    provName_presence: '^Provider name harus diisi',
-    uid_presence: '^Provider uid harus diisi',
-    token_presence: '^Access token harus diisi',
-    user_not_active: '^User belum aktif',
+export const Messages = {
+  userMsg: {
+    create_success: name => `<strong>${name}</strong> has been added to user`,
+    create_duplicate: '<strong>Email</strong> is already used',
+    not_found: 'User not found',
+    edit_success: 'Edit user success',
+    delete_success: 'Delete user success',
   },
-  getUserMsg: {
-    title: 'Get user gagal',
-    not_found: 'User tidak terdaftar',
+  roleMsg: {
+    create_success: name => `<strong>${name}</strong> has been added to role`,
+    create_duplicate: name => `<strong>${name}</strong> is already created`,
+    not_found: 'Role not found',
+    edit_success: 'Edit role success',
+    delete_success: 'Delete role success',
+    role_used: 'The role is still used by user(s)',
   },
-  authorized: {
-    unauthorized: 'Unauthorized',
+  validateMsg: {
+    role: 'not a valid input',
   },
 };
 
-export const loginError = formatError.bind(errMsg.loginMsg);
-export const getUserError = formatError.bind(errMsg.getUserMsg);
-export const authorizedError = formatError.bind(errMsg.authorized);
+export default { Messages };

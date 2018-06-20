@@ -6,14 +6,14 @@ import core from '../core';
 
 const routes = express.Router();
 const { wrap } = core.utils;
-const { jwtAuth } = user.middleware;
+const { auth } = user.middleware;
 
 /**
  * POST /order
  * Create an order
  */
 routes.post('/orders',
-  jwtAuth(),
+  auth(),
   validateCreate(),
   wrap(OrderController.createOrder));
 
@@ -22,7 +22,7 @@ routes.post('/orders',
  * View user order
  */
 routes.get('/orders/:id*?',
-  jwtAuth(),
+  auth(),
   validateGet(),
   wrap(OrderController.getOrder));
 
