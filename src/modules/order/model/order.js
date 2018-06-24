@@ -1,8 +1,8 @@
-import { DataTypes } from 'sequelize';
-import core from '../../core';
-import { User } from '../../user/model';
+const { DataTypes } = require('sequelize');
+const core = require('../../core');
+const { User } = require('../../user/model');
 
-export const OrderStatus = {
+const OrderStatus = {
   NEW: 0,
   ALL_COOKED: 1,
   PAID: 2,
@@ -10,7 +10,7 @@ export const OrderStatus = {
 
 const sequelize = core.sequelize.db;
 
-export const Order = sequelize.define('order', {
+const Order = sequelize.define('order', {
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
@@ -72,4 +72,4 @@ Order.prototype.reloadData = async function () {
   });
 };
 
-export default { Order };
+module.exports = { OrderStatus, Order };

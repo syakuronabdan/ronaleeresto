@@ -1,5 +1,4 @@
-import { Order, OrderStatus } from './order';
-import { OrderDetail, OrderDetailStatus } from './order_detail';
+const { Order, OrderStatus } = require('./order');
+const { OrderDetail, OrderDetailStatus } = require('./order_detail');
 
-export { Order, OrderStatus, OrderDetail, OrderDetailStatus };
-export default { Order, OrderStatus, OrderDetail, OrderDetailStatus };
+module.exports = { Order, OrderStatus, OrderDetail, OrderDetailStatus };

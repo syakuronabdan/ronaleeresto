@@ -1,13 +1,13 @@
-import { Order, OrderStatus } from './model';
 // import productModule from '../product';
 // import lineItemModule from '../lineItem';
-import { NotFoundError } from '../../../common/errors';
+
+const { Order, OrderStatus } = require('./model');
+const { NotFoundError } = require('../../../common/errors');
 
 // const { Product } = productModule.model;
 // const { LineItem, LineItemType } = lineItemModule.model;
 
-export const OrderController = {};
-export default { OrderController };
+const OrderController = {};
 
 /**
  * Create order
@@ -64,3 +64,4 @@ OrderController.getOrder = async (req, res, next) => {
   return res.API.success('Order', order);
 };
 
+module.exports = { OrderController };

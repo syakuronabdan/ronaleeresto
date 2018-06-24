@@ -1,12 +1,13 @@
-import _ from 'lodash';
-import cfg from '../../../config';
-import { BadRequestError } from '../../../common/errors';
+const _ = require('lodash');
+const cfg = require('../../../config');
+const { BadRequestError } = require('../../../common/errors');
+
 
 /**
  * Wrap controller function
  * @param {function} fn
  */
-export function wrap(fn) {
+const wrap = function wrap(fn) {
   return (...args) => {
     try {
       const result = fn(...args);
@@ -26,7 +27,7 @@ export function wrap(fn) {
  * @param {string} key
  * @param {*} defaultValue
  */
-export function config(key, defaultValue) {
+const config = function config(key, defaultValue) {
   if (cfg[key] === undefined) {
     return defaultValue;
   }
@@ -41,7 +42,7 @@ export function config(key, defaultValue) {
  * @param obj {string} the object property of the message
  * @param message {string}
  */
-export function formatSingularErr(obj, message) {
+const formatSingularErr = function formatSingularErr(obj, message) {
   return { [obj]: [message] };
 }
 
@@ -50,9 +51,11 @@ export function formatSingularErr(obj, message) {
  * @param field {string} field that causes error
  * @param msg {string} message of the error
  */
-export function formatError(field, msg) {
+const formatError =  function formatError(field, msg) {
   const data = formatSingularErr(field, this[msg]);
   return new BadRequestError(this[msg], data);
 }
 
-export const error = (flashType, msg, { redirect = 'back', type = 'html' } = {}) => ({ alert: flashType, msg, redirect, type });
+const error = (flashType, msg, { redirect = 'back', type = 'html' } = {}) => ({ alert: flashType, msg, redirect, type });
+
+module.exports = { wrap, config, formatSingularErr, formatError, error };

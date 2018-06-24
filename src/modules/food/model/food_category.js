@@ -1,9 +1,9 @@
-import { DataTypes } from 'sequelize';
-import core from '../../core';
+const { DataTypes } = require('sequelize');
+const core = require('../../core');
 
 const sequelize = core.sequelize.db;
 
-export const FoodCategory = sequelize.define('food_category', {
+const FoodCategory = sequelize.define('food_category', {
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
@@ -44,4 +44,4 @@ FoodCategory.getAll = (condition = {}) => FoodCategory.findAll({ where: conditio
  */
 FoodCategory.getById = id => FoodCategory.findOne({ where: { product_id: id } });
 
-export default { FoodCategory };
+module.exports = { FoodCategory };

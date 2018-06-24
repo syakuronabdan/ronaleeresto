@@ -1,8 +1,8 @@
-import passport from 'passport';
-import local from './strategy/local';
-import { User } from '../model';
+const passport = require('passport');
+const local = require('./strategy/local');
+const { User } = require('../model');
 
-function configure(app) {
+const configure = function configure(app) {
   // eslint-disable-next-line no-underscore-dangle
   passport.serializeUser((user, done) => done(null, user.user_id));
   passport.deserializeUser((id, done) => new User({ user_id: id })
@@ -15,4 +15,5 @@ function configure(app) {
   app.use(passport.session());
 }
 
-export default { configure };
+
+module.exports = { configure };

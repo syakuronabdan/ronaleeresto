@@ -1,8 +1,7 @@
-import { Product } from './model';
-import { NotFoundError } from '../../../common/errors';
+const { Product } = require('./model');
+const { NotFoundError } = require('../../../common/errors');
 
-export const ProductController = {};
-export default { ProductController };
+const ProductController = {};
 
 /**
  * Get Product
@@ -26,3 +25,5 @@ ProductController.getAllProduct = async (req, res) => {
 
   return res.API.success('Product data', products);
 };
+
+module.exports = { ProductController };

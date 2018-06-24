@@ -1,13 +1,13 @@
-import validate from 'validate.js';
-import constraints from './validation';
-import { Order } from '../order/model';
-import { UserRoles } from '../user/model';
-import { BadRequestError } from '../../../common/errors';
+const validate = require('validate.js');
+const constraints = require('./validation');
+const { Order } = require('../order/model');
+const { UserRoles } = require('../user/model');
+const { BadRequestError } = require('../../../common/errors');
 
 /**
  * Product validate middleware
  */
-export function validateCreate() {
+const validateCreate = function validateCreate() {
   return async (req, res, next) => {
     try {
       await validate.async(req.body, constraints.createOrder);
@@ -18,7 +18,7 @@ export function validateCreate() {
   };
 }
 
-export function validateGet() {
+const validateGet = function () {
   return async (req, res, next) => {
     const user = req.user;
     if (req.params.id) {
@@ -34,3 +34,6 @@ export function validateGet() {
     return next();
   };
 }
+
+module.exports = { validateCreate, validateGet };
+

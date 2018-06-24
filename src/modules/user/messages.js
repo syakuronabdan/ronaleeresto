@@ -19,4 +19,4 @@ export const Messages = {
   },
 };
 
-export default { Messages };
+module.exports = { Messages };

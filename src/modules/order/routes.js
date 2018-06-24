@@ -1,8 +1,8 @@
-import express from 'express';
-import { OrderController } from './controller';
-import user from '../user';
-import { validateCreate, validateGet } from './middleware';
-import core from '../core';
+const express = require('express');
+const { OrderController } = require('./controller');
+const user = require('../user');
+const { validateCreate, validateGet } = require('./middleware');
+const core = require('../core');
 
 const routes = express.Router();
 const { wrap } = core.utils;
@@ -26,4 +26,4 @@ routes.get('/orders/:id*?',
   validateGet(),
   wrap(OrderController.getOrder));
 
-export default routes;
+module.exports = routes;

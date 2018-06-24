@@ -7,4 +7,4 @@ c.TEST = 'test';
 
 c.ONE_YEAR = 31557600000;
 
-export default c;
+module.exports = { c };

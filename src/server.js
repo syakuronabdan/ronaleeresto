@@ -1,8 +1,8 @@
-import path from 'path';
-import chalk from 'chalk';
-import commonConfig from '../common/config';
-import config from '../config';
-import app from './app';
+const path = require('path');
+const chalk = require('chalk');
+const commonConfig = require('../common/config');
+const config = require('../config');
+const app = require('./app');
 
 const configDir = path.join(path.dirname(__dirname), 'config');
 commonConfig.resolveLocalConfig(configDir, (err, file) => {

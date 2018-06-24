@@ -1,6 +1,5 @@
-import { Sequelize } from 'sequelize';
-import cfg from '../../../config';
-
+const { Sequelize } = require('sequelize');
+const cfg = require('../../../config');
 /**
  * Connect to mysql instance
  * @param {string} config
@@ -8,7 +7,7 @@ import cfg from '../../../config';
  * TODO: add log file for debugging
  */
 function connect(config) {
-  const sequelize = new Sequelize(config.database, config.username, config.password, {
+   const sequelize = new Sequelize(config.database, config.username, config.password, {
     host: config.host,
     dialect: config.dialect,
     port: config.port,
@@ -19,4 +18,4 @@ function connect(config) {
 
 const db = connect(cfg.sequelize);
 
-export default { db };
+module.exports = { db };

@@ -1,11 +1,10 @@
-import passport from 'passport';
-import config from '../../../config';
-import { User } from './model/user';
-import { error } from '../core/utils';
-import { Messages } from './messages';
+const passport = require('passport');
+const config = require('../../../config');g
+const { User } = require('./model/user');
+const { error } = require('../core/utils');
+const { Messages } = require('./messages');
 
-export const UserController = {};
-export default { UserController };
+const UserController = {};
 
 /**
  * Display user login form
@@ -36,3 +35,5 @@ UserController.login = (req, res, next) => {
     });
   })(req, res, next);
 };
+
+module.exports = { UserController };

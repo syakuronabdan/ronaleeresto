@@ -1,6 +1,6 @@
-import express from 'express';
-import { ProductController } from './controller';
-import core from '../core';
+const express = require('express');
+const { ProductController } = require('./controller');
+const core = require('../core');
 
 const routes = express.Router();
 const { wrap } = core.utils;
@@ -19,4 +19,4 @@ routes.get('/products/:id',
 routes.get('/products',
   wrap(ProductController.getAllProduct));
 
-export default routes;
+module.exports = routes;

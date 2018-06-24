@@ -1,7 +1,7 @@
-import express from 'express';
-import { auth, noUser } from './middleware';
-import { UserController } from './controller';
-import core from '../core';
+const express = require('express');
+const { auth, noUser } = require('./middleware');
+const { UserController } = require('./controller');
+const core = require('../core');
 
 const routes = express.Router();
 const { wrap } = core.utils;
@@ -20,5 +20,4 @@ routes.get('/login',
 routes.post('/login',
   UserController.login);
 
-export default routes;
-
+module.exports = routes;

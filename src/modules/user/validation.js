@@ -12,4 +12,4 @@ constraints.login = {
   },
 };
 
-export default constraints;
+module.exports = { constraints };

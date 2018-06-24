@@ -1,6 +1,5 @@
-import { Food } from './food';
-import { FoodCategory } from './food_category';
-import { FCRel } from './food_category_rel';
+const { Food } = require('./food');
+const { FoodCategory } = require('./food_category');
+const { FCRel } = require('./food_category_rel');
 
-export { Food, FoodCategory, FCRel };
-export default { Food, FoodCategory, FCRel };
+module.exports = { Food, FoodCategory, FCRel };

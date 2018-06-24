@@ -1,19 +1,19 @@
-import 'babel-polyfill';
-import express from 'express';
-import bodyParser from 'body-parser';
-import compression from 'compression';
-import flash from 'connect-flash';
-import session from 'express-session';
-import cors from 'cors';
-import helmet from 'helmet';
-import path from 'path';
-import statusMonitor from 'express-status-monitor';
-import responseTime from 'response-time';
-import config from '../config';
-import c from './constants';
-import core from './modules/core';
-import user from './modules/user';
-import order from './modules/order';
+require('babel-polyfill');
+const express = require('express');
+const bodyParser = require('body-parser');
+const compression = require('compression');
+const flash = require('connect-flash');
+const session = require('express-session');
+const cors = require('cors');
+const helmet = require('helmet');
+const path = require('path');
+const statusMonitor = require('express-status-monitor');
+const responseTime = require('response-time');
+const config = require('../config');
+const c = require('./constants');
+const core = require('./modules/core');
+const user = require('./modules/user');
+const order = require('./modules/order');
 
 const app = express();
 
@@ -72,4 +72,4 @@ app.use((req, res, next) => {
   res.render('core/views/errors/404');
 });
 
-export default app;
+module.exports = app ;

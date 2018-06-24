@@ -1,5 +1,6 @@
-import validate from 'validate.js';
 // import productModule from '../product';
+
+const validate = require('validate.js');
 
 const constraints = {};
 // const { Product, ProductStatus } = productModule.model;
@@ -31,4 +32,4 @@ constraints.createOrder = {
   },
 };
 
-export default constraints;
+module.exports = { constraints };

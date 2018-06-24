@@ -1,7 +1,7 @@
-import * as utils from './utils';
-import * as middleware from './middleware';
-import controller from './controller';
-import sequelize from './sequelize';
-import routes from './routes';
+const utils = require('./utils');
+const middleware = require('./middleware');
+const controller = require('./controller');
+const sequelize = require('./sequelize');
+const routes = require('./routes');
 
-export default { utils, controller, middleware, sequelize, routes };
+module.exports = { utils, controller, middleware, sequelize, routes };

@@ -1,16 +1,16 @@
-import { DataTypes } from 'sequelize';
-import core from '../../core';
-import { Order } from './order';
-import { Food } from '../../food/model';
+const { DataTypes } = require('sequelize');
+const core = require('../../core');
+const { Order } = require('./order');
+const { Food } = require('../../food/model');
 
-export const OrderDetailStatus = {
+const OrderDetailStatus = {
   NEW: 0,
   COOKED: 1,
 };
 
 const sequelize = core.sequelize.db;
 
-export const OrderDetail = sequelize.define('order_detail', {
+const OrderDetail = sequelize.define('order_detail', {
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
@@ -81,4 +81,4 @@ OrderDetail.prototype.reloadData = async function () {
   });
 };
 
-export default { OrderDetail };
+module.exports = { OrderDetailStatus, OrderDetail };

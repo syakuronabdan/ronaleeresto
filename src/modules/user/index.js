@@ -1,6 +1,6 @@
-import * as middleware from './middleware';
-import model from './model';
-import passport from './passport';
-import routes from './routes';
+const middleware = require('./middleware');
+const model = require('./model');
+const passport = require('./passport');
+const routes = require('./routes');
 
-export default { model, middleware, passport, routes };
+module.exports = { model, middleware, passport, routes };

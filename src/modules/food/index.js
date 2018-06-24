@@ -1,5 +1,5 @@
-import * as middleware from './middleware';
-import model from './model';
-import routes from './routes';
+const middleware = require('./middleware');
+const model = require('./model');
+const routes = require('./routes');
 
-export default { model, middleware, routes };
+module.exports = { middleware, model, routes };

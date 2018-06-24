@@ -1,7 +1,6 @@
-import bcrypt from 'bcrypt';
-import { DataTypes } from 'sequelize';
-
-import core from '../../core';
+const bcrypt = require('bcrypt');
+const { DataTypes } = require('sequelize');
+const core = require('../../core');
 
 const sequelize = core.sequelize.db;
 
@@ -10,14 +9,14 @@ const sequelize = core.sequelize.db;
 // see: https://www.npmjs.com/package/bcrypt
 const SALT_ROUND = 8;
 
-export const UserRoles = {
+const UserRoles = { // -> delete export
   ADMIN: '1',
   WAITER: '2',
   COOK: '3',
   CASHIER: '4',
 };
 
-export const User = sequelize.define('user', {
+const User = sequelize.define('user', {
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
@@ -93,4 +92,4 @@ User.prototype.toJSON = function () {
   return values;
 };
 
-export default { User };
+module.exports = { UserRoles, User };

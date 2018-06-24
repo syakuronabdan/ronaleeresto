@@ -1,15 +1,15 @@
-import moment from 'moment';
-import ch from 'chalk';
-import morgan from 'morgan';
-import winston from 'winston';
-import 'winston-daily-rotate-file';
-import config from '../../../config';
+const moment = require('moment');
+const ch = require('chalk');
+const morgan = require('morgan');
+const winston = require('winston');
+require('winston-daily-rotate-file');
+const config = require('../../../config');
 
 /**
  * Request logger middleware
  * @return {function}
  */
-export function requestLoggerMiddleware() {
+const requestLoggerMiddleware = function requestLoggerMiddleware() {
   const logger = new (winston.Logger)({
     transports: [
       new winston.transports.DailyRotateFile({
@@ -36,7 +36,7 @@ export function requestLoggerMiddleware() {
  * Add some utilities to request object
  * @return {function}
  */
-export function requestUtilsMiddleware() {
+const requestUtilsMiddleware = function requestUtilsMiddleware() {
   return (req, res, next) => {
     req.messages = {
       errors: [],
@@ -48,7 +48,7 @@ export function requestUtilsMiddleware() {
 }
 
 // eslint-disable-next-line no-unused-vars
-export function apiResponse() {
+const apiResponse = function apiResponse() {
   return (req, res) => {
     const code = res.statusCode;
     const { status = true, meta, input, link, data = {} } = req.resData || {};
@@ -65,7 +65,7 @@ export function apiResponse() {
   };
 }
 
-export const errorFlash = () => (err, req, res, next) => {
+const errorFlash = () => (err, req, res, next) => {
   const { type, redirect, alert, msg } = err;
   if (type === 'json') {
     const msg2 = Array.isArray(msg) ? msg.join(', ') : msg;
@@ -76,3 +76,5 @@ export const errorFlash = () => (err, req, res, next) => {
   req.flash(alert, msg);
   return res.redirect(redirect);
 };
+
+module.exports = { requestLoggerMiddleware, requestUtilsMiddleware, apiResponse, errorFlash };

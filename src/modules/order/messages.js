@@ -1,12 +1,14 @@
-import core from '../core';
+const core = require('../core');
 
 const { formatError } = core.utils;
 
-export const errMsg = {
+const errMsg = {
   createOrderMsg: {
     product_not_found: 'Product tidak ditemukan',
   },
 };
 
-export const loginError = formatError.bind(errMsg.loginMsg);
-export const createOrderError = formatError.bind(errMsg.createOrderMsg);
+const loginError = formatError.bind(errMsg.loginMsg);
+const createOrderError = formatError.bind(errMsg.createOrderMsg);
+
+module.exports = { errMsg, loginError, createOrderError };

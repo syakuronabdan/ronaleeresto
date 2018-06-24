@@ -1,7 +1,7 @@
-import { Strategy as LocalStrategy } from 'passport-local';
-import { User } from '../../model/user';
+const { Strategy: LocalStrategy } = require('passport-local');
+const { User } = require('../../model/user');
 
-export default new LocalStrategy({
+new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
   passReqToCallback: false,
@@ -14,3 +14,5 @@ export default new LocalStrategy({
   }
   return done(null, user.serialize());
 });
+
+module.exports = LocalStrategy;
