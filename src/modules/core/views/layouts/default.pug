@@ -10,9 +10,9 @@ html(lang='en')
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
-    meta(name='description', content='Alpha JWC Ventures')
-    meta(name='keyword', content='Alpha JWC Ventures, alphajwc, ajwc, ventures')
-    title Admin Alpha JWC
+    meta(name='description', content='Ronalee Resto')
+    meta(name='keyword', content='Ronalee Resto, Ingkung Asap, ingkung, asap, bantul, jogja, imogiri')
+    title Ronalee Resto
     // Icons
     link(href='/static/css/font-awesome.min.css', rel='stylesheet')
     link(href='/static/css/simple-line-icons.css', rel='stylesheet')
@@ -34,95 +34,22 @@ html(lang='en')
         nav.sidebar-nav
           ul.nav
             li.nav-item
-              a.nav-link.nav-title(href='/')
+              a.nav-link.nav-title(href= userRole === roleList.ADMIN ? '/admin' : '/')
                 i.icon-home
                 | Home
-            - const viewMaster = userPermissions.some(perm => masters.includes(perm))
-            if viewMaster
-              li.nav-item.nav-dropdown
-                a.nav-link.nav-title.nav-dropdown-toggle
-                  i.icon-layers
-                  | Master
-                ul.nav-dropdown-items
-                  if userPermissions.includes(permissions.COUNTRY_VIEW)
-                    li.nav-item
-                      a.nav-link(href='/countries')
-                        | Countries
-                  if userPermissions.includes(permissions.ROLE_CATEGORY_VIEW)
-                    li.nav-item
-                      a.nav-link(href='/role-categories')
-                        | Role Categories
-                  if userPermissions.includes(permissions.SECTOR_VIEW)
-                    li.nav-item
-                      a.nav-link(href='/sectors')
-                        | Sectors
-                  if userPermissions.includes(permissions.PRIORITY_VIEW)
-                    li.nav-item
-                      a.nav-link(href='/priorities')
-                        | Priority
-                  if userPermissions.includes(permissions.RATING_VIEW)
-                    li.nav-item
-                      a.nav-link(href='/ratings')
-                        | Rating
-                  if userPermissions.includes(permissions.CURRENCY_VIEW)
-                    li.nav-item
-                      a.nav-link(href='/currencies')
-                        | Currency
-                  if userPermissions.includes(permissions.PROGRESS_STATUS_VIEW)
-                    li.nav-item
-                      a.nav-link(href='/actions')
-                        | Progress Status
-                  if userPermissions.includes(permissions.FUNDRAISING_STAGE_VIEW)
-                    li.nav-item
-                      a.nav-link(href='/stages')
-                        | Fundraise Stage
-                  if userPermissions.includes(permissions.DEAL_STATUS_VIEW)
-                    li.nav-item
-                      a.nav-link(href='/pipeline-statuses')
-                        | Deal Status
-                  if userPermissions.includes(permissions.HIRING_STATUS_VIEW)
-                    li.nav-item
-                      a.nav-link(href='/hiring-statuses')
-                        | Hiring Status
-                  if userPermissions.includes(permissions.CANDIDATE_STATUS_VIEW)
-                    li.nav-item
-                      a.nav-link(href='/candidate-statuses')
-                        | Candidate Status
-            if userPermissions.includes(permissions.USER_VIEW)
+            if userRole === roleList.ADMIN
               li.nav-item
-                a.nav-link.nav-title(href='/users')
+                a.nav-link.nav-title(href='/admin/users')
                   i.icon-user
                   | User
-            if userPermissions.includes(permissions.ROLE_VIEW)
               li.nav-item
-                a.nav-link.nav-title(href='/roles')
-                  i.icon-lock
-                  | Role
-            if userPermissions.includes(permissions.COMPANY_VIEW)
+                a.nav-link.nav-title(href='/admin/menus')
+                  i.icon-book-open
+                  | Menu
               li.nav-item
-                a.nav-link.nav-title(href='/companies')
-                  i.icon-briefcase
-                  | Company
-            if userPermissions.includes(permissions.PEOPLE_VIEW)
-              li.nav-item
-                a.nav-link.nav-title(href='/people')
-                  i.icon-people
-                  | People
-            if userPermissions.includes(permissions.DEAL_VIEW)
-              li.nav-item
-                a.nav-link.nav-title(href='/pipelines')
-                  i.icon-chart
-                  | Deal
-            if userPermissions.includes(permissions.EVENT_VIEW)
-              li.nav-item
-                a.nav-link.nav-title(href='/events')
-                  i.icon-calendar
-                  | Event
-            if userPermissions.includes(permissions.HIRING_VIEW)
-              li.nav-item
-                a.nav-link.nav-title(href='/hirings')
-                  i.icon-globe-alt
-                  | Hiring
+                a.nav-link.nav-title(href='/admin/categories')
+                  i.icon-drawer
+                  | Category
 
       main.main
         ol.breadcrumb
@@ -149,8 +76,8 @@ html(lang='en')
 
     .app-footer.d-flex.align-items-end
       span
-        | © 2017 Dbase Alpha JWC  All Rights Reserved. Let's Scale Up Your Startup
-      a(href='https://skyshi.com/').logo-bottom
+        | © 2018 Ronalee Resto
+      a(href='https://ingkungasap.com/')
 
     script(src='/static/components/jquery.min.js')
     script(src='/static/components/popper.js')

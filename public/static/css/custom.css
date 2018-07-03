@@ -64,17 +64,6 @@ div.note button {
   cursor: pointer;
 }
 
-.logo-bottom {
-  background-image: url("/static/img/skyshi-logo.png");
-  background-repeat: no-repeat;
-  background-position: center center;
-  display: block;
-  width: 84px;
-  height: 50px;
-  padding: 0.5rem 1rem;
-  background-size: 70px auto;
-}
-
 th a div {
   margin-left: 1rem;
   position: relative;

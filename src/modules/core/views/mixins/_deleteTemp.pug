@@ -1,8 +1,0 @@
-mixin deleteTemp()
-  if flashes && flashes.delete
-    script.
-      $(function () {
-        var url = $('#deleteTemp').val();
-        $('#deleteTemp').remove();
-        localStorage[url] = 'delete';
-      });

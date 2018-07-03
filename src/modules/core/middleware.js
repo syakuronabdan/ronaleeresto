@@ -1,9 +1,11 @@
+require('winston-daily-rotate-file');
 const moment = require('moment');
 const ch = require('chalk');
 const morgan = require('morgan');
 const winston = require('winston');
-require('winston-daily-rotate-file');
+const validate = require('validate.js');
 const config = require('../../../config');
+const { error } = require('./utils');
 
 /**
  * Request logger middleware
@@ -30,7 +32,7 @@ const requestLoggerMiddleware = function requestLoggerMiddleware() {
   };
   morgan.token('body', (req, res) => `\nrequest header: ${JSON.stringify(req.headers, null, 2)}\nrequest body: ${JSON.stringify(req.body, null, 2)}\nresponse body: ${JSON.stringify(res.APIResponse, null, 2)}`);
   return morgan(`${ch.red(':method')} ${ch.green(':url')} ${ch.yellow(':response-time ms')} :body`, { stream: logger.stream });
-}
+};
 
 /**
  * Add some utilities to request object
@@ -45,7 +47,7 @@ const requestUtilsMiddleware = function requestUtilsMiddleware() {
     };
     next();
   };
-}
+};
 
 // eslint-disable-next-line no-unused-vars
 const apiResponse = function apiResponse() {
@@ -63,7 +65,17 @@ const apiResponse = function apiResponse() {
       data,
     });
   };
-}
+};
+
+/**
+ * @param {object} constraint
+ * @param {(html|json)} type error format
+ */
+const validateParam = (constraint, { type } = {}) => (req, res, next) => {
+  const hasError = validate(req.body, constraint, { format: 'flat' });
+  if (hasError) return next(error('danger', hasError, { type }));
+  return next();
+};
 
 const errorFlash = () => (err, req, res, next) => {
   const { type, redirect, alert, msg } = err;
@@ -77,4 +89,10 @@ const errorFlash = () => (err, req, res, next) => {
   return res.redirect(redirect);
 };
 
-module.exports = { requestLoggerMiddleware, requestUtilsMiddleware, apiResponse, errorFlash };
+module.exports = {
+  requestLoggerMiddleware,
+  requestUtilsMiddleware,
+  apiResponse,
+  errorFlash,
+  validateParam,
+};

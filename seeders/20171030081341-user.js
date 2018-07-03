@@ -4,28 +4,36 @@ const { User, UserRoles } = user.model;
 
 module.exports = {
   up: queryInterface => queryInterface.bulkInsert('users', [{
-    user_id: 1,
+    id: 1,
     name: 'admin',
     email: 'admin@ronaleeresto.com',
     password: User.hashPasswordSync('admin'),
+    created_at: new Date(),
+    updated_at: new Date(),
     role: UserRoles.ADMIN,
   }, {
-    user_id: 2,
+    id: 2,
     name: 'waiter',
     email: 'waiter@ronaleeresto.com',
     password: User.hashPasswordSync('test123'),
+    created_at: new Date(),
+    updated_at: new Date(),
     role: UserRoles.WAITER,
   }, {
-    user_id: 3,
+    id: 3,
     name: 'cook',
     email: 'cook@ronaleeresto.com',
     password: User.hashPasswordSync('test123'),
+    created_at: new Date(),
+    updated_at: new Date(),
     role: UserRoles.COOK,
   }, {
-    user_id: 4,
+    id: 4,
     name: 'cashier',
     email: 'cashier@ronaleeresto.com',
     password: User.hashPasswordSync('test123'),
+    created_at: new Date(),
+    updated_at: new Date(),
     role: UserRoles.CASHIER,
   }], {}),
 

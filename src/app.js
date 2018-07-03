@@ -58,6 +58,16 @@ app.use(core.middleware.requestLoggerMiddleware());
 app.use(core.middleware.requestUtilsMiddleware());
 
 app.use(flash());
+// set locals variables
+// to be used in pug
+app.use((req, res, next) => {
+  res.locals.flashes = req.flash();
+  res.locals.user = req.user || undefined;
+  res.locals.roleList = user.model.UserRoles;
+  // Current user role
+  res.locals.userRole = req.session.userRole;
+  next();
+});
 
 app.use(core.routes);
 app.use(user.routes);
@@ -72,4 +82,4 @@ app.use((req, res, next) => {
   res.render('core/views/errors/404');
 });
 
-module.exports = app ;
+module.exports = app;

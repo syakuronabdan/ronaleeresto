@@ -18,7 +18,7 @@ def.secret = 'project';
 
 // sequelize config
 def.sequelize = {};
-def.sequelize.debug = console.log;
+def.sequelize.debug = false;
 def.sequelize.username = 'root';
 def.sequelize.password = '';
 def.sequelize.database = 'ronaleerestodb';

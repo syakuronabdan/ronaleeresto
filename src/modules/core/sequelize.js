@@ -7,7 +7,7 @@ const cfg = require('../../../config');
  * TODO: add log file for debugging
  */
 function connect(config) {
-   const sequelize = new Sequelize(config.database, config.username, config.password, {
+  const sequelize = new Sequelize(config.database, config.username, config.password, {
     host: config.host,
     dialect: config.dialect,
     port: config.port,

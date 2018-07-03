@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const cfg = require('../../../config');
 const { BadRequestError } = require('../../../common/errors');
 
@@ -7,20 +6,9 @@ const { BadRequestError } = require('../../../common/errors');
  * Wrap controller function
  * @param {function} fn
  */
-const wrap = function wrap(fn) {
-  return (...args) => {
-    try {
-      const result = fn(...args);
-      if (result && _.isFunction(result.catch)) {
-        result.catch(args[2]);
-      }
-
-      return result;
-    } catch (e) {
-      return args[2](e);
-    }
-  };
-}
+const wrap = fn => (req, res, next) => fn(req, res, next).catch((e) => {
+  next(e);
+});
 
 /**
  * Wrapper function for config
@@ -33,29 +21,22 @@ const config = function config(key, defaultValue) {
   }
 
   return cfg[key];
-}
+};
 
-/**
- * Format error other than validate.js, for consistent error response.
- * Singular because once the error encountered the api will throw the error,
- * thus not allowing it to have multiple error messages
- * @param obj {string} the object property of the message
- * @param message {string}
- */
-const formatSingularErr = function formatSingularErr(obj, message) {
-  return { [obj]: [message] };
-}
-
-/**
- * Format bad request error
- * @param field {string} field that causes error
- * @param msg {string} message of the error
- */
-const formatError =  function formatError(field, msg) {
-  const data = formatSingularErr(field, this[msg]);
-  return new BadRequestError(this[msg], data);
-}
+const capitalize = (str) => {
+  if (!str) return '';
+  if (Array.isArray(str)) return str.map(s => s.toLowerCase().replace(/\b\w/g, l => l.toUpperCase()));
+  return str.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+};
 
 const error = (flashType, msg, { redirect = 'back', type = 'html' } = {}) => ({ alert: flashType, msg, redirect, type });
+const errorJSON = (flashType, msg, { redirect = 'back' } = {}) => ({ alert: flashType, msg, redirect, type: 'json' });
 
-module.exports = { wrap, config, formatSingularErr, formatError, error };
+const formatCurrency = (format, curr) => new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: format,
+  currencyDisplay: 'code',
+  minimumFractionDigits: 2,
+}).format(curr);
+
+module.exports = { wrap, config, error, errorJSON, formatCurrency, capitalize };
