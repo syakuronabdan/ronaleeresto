@@ -13,10 +13,6 @@ const FoodCategory = sequelize.define('food_category', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  parent: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    defaultValue: 0,
-  },
 }, {
   underscored: true,
   timestamps: true,

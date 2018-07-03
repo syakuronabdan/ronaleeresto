@@ -65,7 +65,7 @@ OrderDetail.getAll = (condition = {}) => OrderDetail.findAll({
 // TODO: implement hook to increase the product quantity on order cancel
 
 // eslint-disable-next-line
-OrderDetail.prototype.toJSON = function () {
+OrderDetail.prototype.serialize = function () {
   const values = Object.assign({}, this.get());
 
   return values;
