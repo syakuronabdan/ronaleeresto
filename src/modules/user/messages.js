@@ -1,4 +1,4 @@
-export const Messages = {
+module.exports = {
   userMsg: {
     create_success: name => `<strong>${name}</strong> has been added to user`,
     create_duplicate: '<strong>Email</strong> is already used',
@@ -9,7 +9,7 @@ export const Messages = {
   roleMsg: {
     create_success: name => `<strong>${name}</strong> has been added to role`,
     create_duplicate: name => `<strong>${name}</strong> is already created`,
-    not_found: 'Role not found',
+    not_found: '^Role not chosen',
     edit_success: 'Edit role success',
     delete_success: 'Delete role success',
     role_used: 'The role is still used by user(s)',
@@ -18,5 +18,3 @@ export const Messages = {
     role: 'not a valid input',
   },
 };
-
-module.exports = { Messages };

@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const { DataTypes } = require('sequelize');
 const core = require('../../core');
 
+const { capitalize } = core.utils;
 const sequelize = core.sequelize.db;
 
 // used by bcrypt to generate new salt
@@ -9,11 +10,11 @@ const sequelize = core.sequelize.db;
 // see: https://www.npmjs.com/package/bcrypt
 const SALT_ROUND = 8;
 
-const UserRoles = { // -> delete export
-  ADMIN: '1',
-  WAITER: '2',
-  COOK: '3',
-  CASHIER: '4',
+const UserRoles = {
+  ADMIN: 1,
+  WAITER: 2,
+  COOK: 3,
+  CASHIER: 4,
 };
 
 const User = sequelize.define('user', {
@@ -34,7 +35,7 @@ const User = sequelize.define('user', {
   password: {
     type: DataTypes.STRING,
     defaultValue: null,
-    allowNull: true,
+    allowNull: false,
   },
   role: {
     type: DataTypes.INTEGER,
@@ -70,9 +71,38 @@ User.getById = id => User.findOne({ where: { user_id: id } });
 
 /**
  * Get a user by condition
+ * @param {object} condition
+ */
+User.get = (condition = {}) => User.findOne({ where: condition });
+
+/**
+ * Get users by condition
  * @param {Object} condition
  */
 User.getAll = (condition = {}) => User.findAll({ where: condition });
+
+/**
+ * Get users for views with pagination
+ *
+ * @param {Object} condition
+ * @param {{ page, pageSize }} page
+ */
+User.getWithPage = (condition = {}, page = {}) => User.findAndCountAll(Object.assign(
+  { where: condition },
+  page.page
+    ? { limit: page.pageSize, offset: (page.page - 1) * page.pageSize }
+    : {},
+)).then(({ count, rows }) => {
+  const roles = Object.keys(UserRoles).reduce((res, role) => {
+    const id = UserRoles[role];
+    res[id] = { id, name: capitalize(role) };
+    return res;
+  }, {});
+  return {
+    pagination: { page: page.page, pageCount: Math.ceil(count / page.pageSize) },
+    data: rows.map(row => ({ ...row.serialize(), role: roles[row.role] })),
+  };
+});
 
 /**
  * Compare plain password with it's hashed password
@@ -85,7 +115,7 @@ User.prototype.checkPassword = function (plain) {
 };
 
 // eslint-disable-next-line
-User.prototype.toJSON = function () {
+User.prototype.serialize = function () {
   const values = Object.assign({}, this.get());
 
   delete values.password;
