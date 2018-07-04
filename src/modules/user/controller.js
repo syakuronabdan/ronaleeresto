@@ -37,7 +37,8 @@ UserController.login = (req, res, next) => {
     }
     return req.logIn(user, (e) => {
       if (e) return next(error('danger', 'Invalid username or password'));
-      const { redirect = user.role === UserRoles.ADMIN ? '/admin' : '/' } = req.query;
+      let { redirect } = req.query;
+      redirect = redirect || user.role === UserRoles.ADMIN ? '/admin' : '/';
       req.session.userRole = user.role;
       return res.redirect(redirect);
     });
