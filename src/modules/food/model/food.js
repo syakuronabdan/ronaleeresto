@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const core = require('../../core');
+const { FoodCategory } = require('./food_category');
 
 const sequelize = core.sequelize.db;
 
@@ -16,6 +17,9 @@ const Food = sequelize.define('food', {
   price: {
     type: DataTypes.DECIMAL(6, 0),
     allowNull: false,
+  },
+  fc_id: {
+    type: DataTypes.INTEGER.UNSIGNED,
   },
 }, {
   underscored: true,
@@ -43,5 +47,7 @@ Food.getAll = (condition = {}) => Food.findAll({ where: condition });
  * @param {integer} id
  */
 Food.getById = id => Food.findOne({ where: { product_id: id } });
+
+Food.belongsTo(FoodCategory, { as: 'fc' });
 
 module.exports = { Food };
