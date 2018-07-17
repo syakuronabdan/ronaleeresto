@@ -53,10 +53,10 @@ UserController.createView = async (req, res) => {
 UserController.create = async (req, res) => {
   const { email, role } = req.body;
   const name = capitalize(req.body.name);
-  const password = User.hashPassword(req.body.password);
+  const password = User.hashPasswordSync(req.body.password);
   const user = await User.get({ email });
   if (user) throw error('danger', userMsg.create_duplicate);
-  await User.create({ name, email, password, role_id: role, user_id: req.user.id });
+  await User.create({ name, email, password, role, user_id: req.user.id });
   req.flash('success', userMsg.create_success(name));
   return res.redirect('/admin/users');
 };
@@ -71,11 +71,11 @@ UserController.editView = (link, type) => async (req, res) => {
 UserController.edit = redirect => async (req, res) => {
   const { email, role } = req.body;
   const name = capitalize(req.body.name);
-  const password = req.body.password ? User.hashPassword(req.body.password) : '';
+  const password = req.body.password ? User.hashPasswordSync(req.body.password) : '';
   const [check, user] = await Promise.all([User.get({ email }), User.get({ id: req.params.id })]);
   if (check && check.get('id') !== user.get('id')) throw error('danger', userMsg.create_duplicate);
   if (!user) throw error('danger', userMsg.not_found, { redirect });
-  const update = { name, email, role_id: role };
+  const update = { name, email, role };
   if (password) update.password = password;
   await User.update(update, { where: { id: req.params.id } });
   req.flash('success', userMsg.edit_success);
