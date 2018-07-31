@@ -9,7 +9,7 @@ block content
         .card-header #{type === 'add' ? 'Create' : 'Edit'} Menu
         .card-body
           +alert(flashes)
-          - const action = type === 'add' ? `${link}/add` : `${link}/edit/${person.id}`
+          - const action = type === 'add' ? `${link}/add` : `${link}/edit/${menu.id}`
           form.form-horizontal(method='post' action= type === 'profile' ? link : action)
             .form-group.row
               label.col-md-3.form-control-label(for='name') Name
@@ -18,13 +18,13 @@ block content
             .form-group.row
               label.col-md-3.form-control-label(for='price') Price
               .col-md-9
-                input#email.form-control(type='price' name='price' placeholder='Enter Price..' value=menu ? menu.price : '' required)
+                input#price.form-control(type='price' name='price' placeholder='Enter Price..' value=menu ? menu.price : '' required)
             .form-group.row
               label.col-md-3.form-control-label(for='parent') Category
               .col-md-9
                 select.form-control#parent(name='category')
                   each category in fc
-                    if menu && category.id == menu.role
+                    if menu && menu.fc_id === category.id
                       option(value=category.id selected)= category.name
                     else
                       option(value=category.id)= category.name

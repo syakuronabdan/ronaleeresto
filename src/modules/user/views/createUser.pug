@@ -31,7 +31,7 @@ block content
                 .col-md-9
                   select.form-control#parent(name='role')
                     each role in roles
-                      if person && role.id == person.role
+                      if person && role.id === person.role
                         option(value=role.id selected)= role.name
                       else
                         option(value=role.id)= role.name

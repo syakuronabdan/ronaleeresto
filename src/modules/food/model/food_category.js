@@ -27,6 +27,8 @@ const FoodCategory = sequelize.define('food_category', {
  */
 FoodCategory.getAll = (condition = {}) => FoodCategory.findAll({ where: condition });
 
+FoodCategory.get = (condition = {}) => FoodCategory.findOne({ where: condition });
+
 // /**
 //  * Update food category
 //  * @param {integer} id
@@ -39,5 +41,22 @@ FoodCategory.getAll = (condition = {}) => FoodCategory.findAll({ where: conditio
  * @param {integer} id
  */
 FoodCategory.getById = id => FoodCategory.findOne({ where: { product_id: id } });
+
+FoodCategory.getWithPage = (condition = {}, page = {}) =>
+  FoodCategory.findAndCountAll(Object.assign(
+  { where: condition },
+  page.page
+    ? { limit: page.pageSize, offset: (page.page - 1) * page.pageSize }
+    : {},
+)).then(({ count, rows }) => ({
+  pagination: { page: page.page, pageCount: Math.ceil(count / page.pageSize) },
+  data: rows.map(row => ({ ...row.serialize() })),
+}));
+
+FoodCategory.prototype.serialize = function () {
+  const values = Object.assign({}, this.get());
+  delete values.password;
+  return values;
+};
 
 module.exports = { FoodCategory };

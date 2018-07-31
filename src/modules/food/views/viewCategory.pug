@@ -19,24 +19,22 @@ block content
             table.table.table-bordered.table-striped
               thead
                 tr
+                  th ID
                   th Name
-                  th Categories
-                  th Price
                   if userRole === roleList.ADMIN
                     th.action-col Action
               tbody
                 - let order = 0
-                each food in menus
+                each category in menus
                   tr
-                    td= food.name
-                    td= food.fc.name
-                    td= food.price
+                    td= category.id
+                    td= category.name
                     if userRole === roleList.ADMIN
                       td
                         if userRole === roleList.ADMIN
-                          a.btn.btn-sm.btn-primary.mr-1(href=`${link}/edit/${food.id}`) Edit
+                          a.btn.btn-sm.btn-primary.mr-1(href=`${link}/edit/${category.id}`) Edit
                         if userRole === roleList.ADMIN
-                          button.btn.btn-sm.btn-danger(onclick=`$("#modalBtn").attr("href", "${link}/delete/${food.id}")` data-toggle='modal' data-target='#myModal') Delete
+                          button.btn.btn-sm.btn-danger(onclick=`$("#modalBtn").attr("href", "${link}/delete/${category.id}")` data-toggle='modal' data-target='#myModal') Delete
                     - order += 1
             +pagination()
 

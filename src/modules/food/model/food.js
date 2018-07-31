@@ -35,6 +35,9 @@ const Food = sequelize.define('food', {
  */
 Food.getAll = (condition = {}) => Food.findAll({ where: condition });
 
+Food.get = (condition = {}) => Food.findOne({ where: condition });
+
+
 // /**
 //  * Update food
 //  * @param {integer} id
