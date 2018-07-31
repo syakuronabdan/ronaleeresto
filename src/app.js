@@ -14,6 +14,7 @@ const c = require('./constants');
 const core = require('./modules/core');
 const user = require('./modules/user');
 const order = require('./modules/order');
+const food = require('./modules/food');
 
 const app = express();
 
@@ -72,6 +73,7 @@ app.use((req, res, next) => {
 app.use(core.routes);
 app.use(user.routes);
 app.use(order.routes);
+app.use(food.routes);
 
 app.use(core.middleware.errorFlash());
 

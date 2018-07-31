@@ -1,0 +1,36 @@
+extends ../../core/views/layouts/default.pug
+
+include ../../core/views/mixins/_alert.pug
+
+block content
+  .row
+    .col-md-8.ml-md-auto.mr-md-auto
+      .card
+        .card-header #{type === 'add' ? 'Create' : 'Edit'} Menu
+        .card-body
+          +alert(flashes)
+          - const action = type === 'add' ? `${link}/add` : `${link}/edit/${menu.id}`
+          form.form-horizontal(method='post' action= type === 'profile' ? link : action)
+            .form-group.row
+              label.col-md-3.form-control-label(for='name') Name
+              .col-md-9
+                input#name.form-control(type='text' name='name' placeholder='Enter Name..' value=menu ? menu.name : '' required)
+            .form-group.row
+              label.col-md-3.form-control-label(for='price') Price
+              .col-md-9
+                input#price.form-control(type='price' name='price' placeholder='Enter Price..' value=menu ? menu.price : '' required)
+            .form-group.row
+              label.col-md-3.form-control-label(for='parent') Category
+              .col-md-9
+                select.form-control#parent(name='category')
+                  each category in fc
+                    if menu && menu.fc_id === category.id
+                      option(value=category.id selected)= category.name
+                    else
+                      option(value=category.id)= category.name
+            .form-group.form-action.mb-0
+              .col-md-12.d-flex.flex-row-reverse.pr-0
+                button#submit.btn.btn-sm.btn-primary.ml-1(type='submit')= type === 'add' ? 'Create' : 'Save'
+                a.btn.btn-sm.btn-secondary(href=type === 'profile' ? '/' : link) Cancel
+
+block script

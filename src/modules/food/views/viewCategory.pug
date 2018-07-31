@@ -1,0 +1,46 @@
+extends ../../core/views/layouts/default.pug
+
+include ../../core/views/mixins/_alert.pug
+include ../../core/views/mixins/_modal.pug
+include ../../core/views/mixins/_pagination.pug
+
+block content
+  .row
+    .col-md-12
+      .card
+        .card-header Menu List
+          if userRole === roleList.ADMIN
+            a.card-head-add(href=`${link}/add`)
+              i.icon-plus.mr-1
+              | Add New
+        .card-body
+          +alert(flashes)
+          .table-responsive
+            table.table.table-bordered.table-striped
+              thead
+                tr
+                  th Name
+                  th Categories
+                  th Price
+                  if userRole === roleList.ADMIN
+                    th.action-col Action
+              tbody
+                - let order = 0
+                each food in menus
+                  tr
+                    td= food.name
+                    td= food.fc.name
+                    td= food.price
+                    if userRole === roleList.ADMIN
+                      td
+                        if userRole === roleList.ADMIN
+                          a.btn.btn-sm.btn-primary.mr-1(href=`${link}/edit/${food.id}`) Edit
+                        if userRole === roleList.ADMIN
+                          button.btn.btn-sm.btn-danger(onclick=`$("#modalBtn").attr("href", "${link}/delete/${food.id}")` data-toggle='modal' data-target='#myModal') Delete
+                    - order += 1
+            +pagination()
+
+      +deleteModal('Delete User', 'Are you sure?')
+
+block script
+  +paginationInit(link)

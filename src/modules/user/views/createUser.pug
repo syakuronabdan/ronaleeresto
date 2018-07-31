@@ -22,7 +22,7 @@ block content
             .form-group.row
               label.col-md-3.form-control-label(for='password') Password
               .col-md-9
-                input#password.form-control(type='password' name='password' placeholder=person ? 'Change Password..' : 'Enter Password..' value='')
+                input#password.form-control(type='password' name='password' placeholder=person ? 'Change Password..': 'Enter Password..' value='')
                 if type === 'edit' || type === 'profile'
                   span.help-block Leave this field empty if you don't want to change the password
             unless type === 'profile'

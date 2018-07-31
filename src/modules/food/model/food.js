@@ -50,4 +50,20 @@ Food.getById = id => Food.findOne({ where: { product_id: id } });
 
 Food.belongsTo(FoodCategory, { as: 'fc' });
 
+Food.getWithPage = (condition = {}, page = {}) => Food.findAndCountAll(Object.assign(
+  { include: [{ model: FoodCategory, as: 'fc' }], where: condition},
+  page.page
+    ? { limit: page.pageSize, offset: (page.page - 1) * page.pageSize }
+    : {},
+)).then(({ count, rows }) => ({
+  pagination: { page: page.page, pageCount: Math.ceil(count / page.pageSize) },
+  data: rows.map(row => ({ ...row.serialize() })),
+}));
+
+Food.prototype.serialize = function () {
+  const values = Object.assign({}, this.get());
+  delete values.password;
+  return values;
+};
+
 module.exports = { Food };
