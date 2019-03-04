@@ -16,7 +16,7 @@ const validateCreate = function validateCreate() {
       return next(new BadRequestError('Validation error', err));
     }
   };
-}
+};
 
 const validateGet = function () {
   return async (req, res, next) => {
@@ -33,7 +33,7 @@ const validateGet = function () {
     }
     return next();
   };
-}
+};
 
 module.exports = { validateCreate, validateGet };
 

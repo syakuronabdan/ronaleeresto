@@ -1,0 +1,124 @@
+extends ../../core/views/layouts/default.pug
+
+include ../../core/views/mixins/_alert.pug
+
+block head
+
+block content
+  .row
+    each category in foods
+      .col-sm-12.col-md-6(id=`cat-${category.id}`)
+        .card
+          .card-header= category.name
+          .card-body
+            each food, idx in category.foods
+              .row.align-items-center(className=`${idx !== 0? 'mt-3':''}` id=`menu-${food.id}`)
+                .col-md-9 #{food.name}: Rp#{food.price}
+                .col-md-3
+                  button.btn.btn-sm.btn-success(onclick=`addMenu(${food.id}, '${food.name}', ${food.price})`) Add
+  .row#cart
+    .col-12
+      .card
+        .card-header My Order
+        .card-body
+          form(method='post' action=action)
+            .row
+              .col-md-12.form-group
+                textarea.form-control(rows="3" name="notes" placeholder="Notes...")
+            .row
+              .col-md-8
+                table.table.table-responsive
+                  tbody#cart-row
+                    tr#empty-cart
+                      td.pt-0.px-0(style='border-top: 0')
+              .col-md-4
+                .row.mb-3
+                  .col-md-4 Total
+                  .col-md-8 Rp
+                    |
+                    span#total 0
+                .row
+                  .col-md-8.form-group
+                    input.form-control.form-control-sm(type='text' name='table' placeholder='Table')
+                  .col-md-4
+                    button.btn.btn-sm.btn-primary(type='submit') Order
+
+
+block script
+  script(type='text/javascript').
+    function changeAddBtn(menuId, name, price) {
+      var div = $('#menu-' + menuId)
+      div.children('.col-md-3').addClass('input-group');
+      div.children('.col-md-3').html('<span class="input-group-prepend"><button class="btn btn-primary btn-sm" onclick="subtractMenu('+menuId+', \''+name+'\', '+price+')"><i class="fa fa-minus"></i></button></span>' +
+        '<input class="short" value="1" disabled>' +
+        '<span class="input-group-append"><button class="btn btn-primary btn-sm" onclick="addMenu('+menuId+', \''+name+'\', '+price+')"><i class="fa fa-plus"></i></button></span>');
+    }
+
+    function addMenu(menuId, name, price) {
+      // check if menu already added on cart
+      var amount;
+      if($('#empty-cart').length) {
+        var cart = $('#empty-cart');
+        cart.attr('id', 'menu-cart-'+menuId);
+        cart.children('td').html('<span>1</span>x '+name);
+        cart.append('<input class="id" type="hidden" name="menu[][ids]" value="'+menuId+'" />')
+          .append('<input class="amount" type="hidden" name="menu[][amounts]" value="1" />');
+        changeAddBtn(menuId, name, price);
+      // if there's already items on the cart
+      } else {
+        // Menu is already added to the cart
+        if($('#menu-cart-'+menuId).length) {
+          var cartRow = $('#menu-cart-'+menuId);
+          var menuRow = $('#menu-'+menuId);
+          var cartRowInput = cartRow.children('.amount')
+          amount = Number(cartRowInput.val()) + 1;
+          menuRow.find('.short').val(amount);
+          cartRow.find('span').text(amount);
+          cartRowInput.val(amount);
+        } else {
+          // Add row to cart
+          $('#cart-row').append('<tr id="menu-cart-'+menuId+'">' +
+            '<td class="px-0"><span>1</span>x '+name+'</td>' +
+            '<input class="id" type="hidden" name="menu[][ids]" value="'+menuId+'" />' +
+            '<input class="amount" type="hidden" name="menu[][amounts]" value="1" />' +
+            '</tr>');
+          changeAddBtn(menuId, name, price);
+        }
+      }
+      $('#total').text(Number($('#total').text())+price);
+    }
+
+    function revertBtn(menuId, name, price) {
+      var menuRow = $('#menu-' + menuId);
+      var menuRowBtn = menuRow.children('.col-md-3');
+      menuRowBtn.removeClass('input-group');
+      menuRowBtn.html('<button class="btn btn-sm btn-success" onclick="addMenu(' + menuId + ', \'' + name + '\', ' + price + ')">Add</button>');
+    }
+
+    function subtractMenu(menuId, name, price) {
+      var tableRow = $('#cart-row');
+      var cartRow = $('#menu-cart-'+menuId);
+      var cartRowInput = cartRow.children('.amount');
+      var amount = Number(cartRowInput.val());
+      if(amount === 1 && tableRow.children().length > 1) {
+        console.log('remove cart row');
+        revertBtn(menuId, name, price);
+        // check if this is the first row
+        if (cartRow.is(':first-child')) {
+          cartRow.next().children('td').addClass('pt-0').attr('style', 'border-top: 0');
+        }
+        cartRow.remove();
+      } else if(amount > 1) {
+        console.log('decrease amount');
+        var menuRow = $('#menu-'+menuId);
+        cartRowInput.val(amount-1);
+        menuRow.find('.short').val(amount - 1);
+        cartRow.find('span').text(amount - 1);
+      } else if(amount === 1 && tableRow.children().length === 1) {
+        console.log('remove cart');
+        revertBtn(menuId, name, price);
+        cartRow.attr('id', 'empty-cart');
+        cartRow.html('<td class="pt-0 px-0" style="border-top: 0"></td>');
+      }
+      $('#total').text(Number($('#total').text()) - price);
+    }

@@ -49,7 +49,7 @@ Food.get = (condition = {}) => Food.findOne({ where: condition });
  * Get food by id
  * @param {integer} id
  */
-Food.getById = id => Food.findOne({ where: { product_id: id } });
+Food.getById = id => Food.findOne({ where: { id }, raw: true });
 
 Food.belongsTo(FoodCategory, { as: 'fc' });
 

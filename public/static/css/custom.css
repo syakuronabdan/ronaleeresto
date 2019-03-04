@@ -111,3 +111,7 @@ th.action-col {
 .form-control:disabled {
   background-color: #fff;
 }
+
+input.short {
+  width: 35px;
+}

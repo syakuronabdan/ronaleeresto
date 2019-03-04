@@ -1,67 +1,71 @@
-// import productModule from '../product';
-// import lineItemModule from '../lineItem';
-
-const { Order, OrderStatus } = require('./model');
+const { Order, OrderDetail } = require('./model');
+const { Food, FoodCategory } = require('../food/model');
 const { NotFoundError } = require('../../../common/errors');
 
-// const { Product } = productModule.model;
-// const { LineItem, LineItemType } = lineItemModule.model;
-
 const OrderController = {};
+
+// Socket io
 
 /**
  * Create order
  */
 OrderController.createOrder = async (req, res, next) => {
-  const user = req.user;
-  let order = await Order.create({
-    status: OrderStatus.CART,
-    user_id: user.user_id,
+  const ids = req.body.menu[0].ids;
+  const foods = await Promise.all(ids.map(id => Food.getById(id)));
+
+  let total = 0;
+  const amounts = req.body.menu[0].amounts;
+  const details = foods.map((food, idx) => {
+    total += food.price * amounts[idx];
+    return {
+      quantity: amounts[idx],
+      unit_price: food.price,
+      food_id: food.id,
+    };
   });
 
-  const orderId = order.get('order_id');
-  const products = req.body.products;
+  const order = await Order.create({
+    order_number: req.body.table,
+    table_num: req.body.table,
+    comment: req.body.notes.trim(),
+    total,
+    user_id: req.user.id,
+  });
 
-  await Promise.all(products.map(async (product) => {
-    // const { product_id, quantity } = product;
-    // const productData = await Product.getById(product_id);
-    // await LineItem.create({
-    //   name: productData.name,
-    //   entity_type: LineItemType.PRODUCT,
-    //   entity_id: product_id,
-    //   quantity,
-    //   amount: productData.price,
-    //   total_amount: quantity * productData.price,
-    //   order_id: orderId,
-    // });
+  await OrderDetail.bulkCreate(details.map((detail) => {
+    detail.order_id = order.id;
+    return detail;
   }));
-  order = await order.reloadData();
 
-  return res.API.success('Order', order);
+  req.flash('success', 'Order successfully created!');
+  return res.redirect('/orders');
 };
 
 /**
  * View user order
  */
 OrderController.getOrder = async (req, res, next) => {
-  const user = req.user;
   let order;
   if (req.params.id) {
     order = await Order.getById(req.params.id);
-  } else {
+    if (!order) {
+      const err = new NotFoundError('invalid order');
+      return next(err);
+    }
+  } /* else {
     const condition = {
       order_number: req.query.order_number || '',
       shipping_receipt: req.query.shipping_receipt || '',
-      user_id: user.user_id,
+      id: user.id,
     };
     order = await Order.getAll(condition);
-  }
-
-  if (!order) {
-    const err = new NotFoundError('invalid order');
-    return next(err);
-  }
-  return res.API.success('Order', order);
+  }*/
+  const [foods, fcs] = await Promise.all([Food.getAll(), FoodCategory.getAll()]);
+  const sortedFoods = fcs.map(({ dataValues: fc }) => {
+    fc.foods = foods.filter(food => food.fc_id === fc.id).map(({ dataValues }) => dataValues);
+    return fc;
+  });
+  return res.render('order/views/createOrder', { foods: sortedFoods, action: '/orders' });
 };
 
 module.exports = { OrderController };

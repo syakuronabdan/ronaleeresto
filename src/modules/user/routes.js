@@ -41,6 +41,10 @@ routes.get('/admin/users/delete/:id([0-9]+)',
   auth([UserRoles.ADMIN]),
   wrap(UserController.delete));
 
+routes.get('/',
+  auth([UserRoles.WAITER, UserRoles.CASHIER, UserRoles.COOK]),
+  UserController.noAdminDashboard);
+
 routes.get('/logout',
   UserController.logout);
 

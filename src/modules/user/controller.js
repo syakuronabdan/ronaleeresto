@@ -100,4 +100,8 @@ UserController.delete = async (req, res) => {
   return res.redirect('/admin/users');
 };
 
+UserController.noAdminDashboard = async (req, res) => {
+  res.render('user/views/dashboardNoAdmin');
+};
+
 module.exports = { UserController };

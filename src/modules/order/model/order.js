@@ -45,13 +45,14 @@ const Order = sequelize.define('order', {
 
 Order.belongsTo(User, { as: 'user' });
 
-Order.getById = id => Order.findOne({ where: { order_id: id } });
+Order.getById = id => Order.findOne({ where: { id } });
 
 Order.getAll = (condition = {}) => Order.findAll({
   where: condition,
   include: [
-    { model: User },
+    { model: User, as: 'user' },
   ],
+  raw: true,
 });
 // TODO: implement hook to decrease the product quantity on order create
 // TODO: implement hook to increase the product quantity on order cancel
@@ -67,7 +68,7 @@ Order.prototype.reloadData = async function () {
   return this.reload({
     plain: true,
     include: [
-      { model: User },
+      { model: User, as: 'user' },
     ],
   });
 };

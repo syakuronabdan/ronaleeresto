@@ -10,21 +10,6 @@ const routes = express.Router();
 const { wrap } = core.utils;
 const { validateParam } = core.middleware;
 
-
-/**
- * GET /product/:id
- * View user profile
- */
-routes.get('/products/:id',
-  wrap(ProductController.getProductById));
-
-/**
- * GET /profile
- * View user profile
- */
-routes.get('/products',
-  wrap(ProductController.getAllProduct));
-
 routes.get('/admin/menus',
   auth([UserRoles.ADMIN]),
   ProductController.viewAll);

@@ -14,7 +14,7 @@ const { auth } = user.middleware;
  */
 routes.post('/orders',
   auth(),
-  validateCreate(),
+  // validateCreate(),
   wrap(OrderController.createOrder));
 
 /**
@@ -23,7 +23,6 @@ routes.post('/orders',
  */
 routes.get('/orders/:id*?',
   auth(),
-  validateGet(),
   wrap(OrderController.getOrder));
 
 module.exports = routes;

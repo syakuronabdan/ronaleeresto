@@ -50,6 +50,11 @@ html(lang='en')
                 a.nav-link.nav-title(href='/admin/categories')
                   i.icon-drawer
                   | Category
+            if userRole === roleList.WAITER || userRole === roleList.CASHIER
+              li.nav-item
+                a.nav-link.nav-title(href='/orders')
+                  i.icon-book-open
+                  | Order
 
       main.main
         ol.breadcrumb
