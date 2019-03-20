@@ -7,7 +7,7 @@ const session = require('express-session');
 const cors = require('cors');
 const helmet = require('helmet');
 const path = require('path');
-const statusMonitor = require('express-status-monitor');
+// const statusMonitor = require('express-status-monitor');
 const responseTime = require('response-time');
 const config = require('../config');
 const c = require('./constants');
@@ -17,13 +17,17 @@ const order = require('./modules/order');
 const food = require('./modules/food');
 
 const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
+app.io = io;
 
 process.on('unhandledRejection', (err) => {
   // eslint-disable-next-line no-console
   console.log('Unhandled Rejection:', err.stack);
 });
 
-app.use(statusMonitor());
+// app.use(statusMonitor());
 app.use(responseTime());
 app.use(cors());
 app.use(helmet());
@@ -84,4 +88,4 @@ app.use((req, res, next) => {
   res.render('core/views/errors/404');
 });
 
-module.exports = app;
+module.exports = http;

@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const core = require('../../core');
 const { User } = require('../../user/model');
+const { OrderDetail } = require('./order_detail');
 
 const OrderStatus = {
   NEW: 0,
@@ -44,6 +45,7 @@ const Order = sequelize.define('order', {
 });
 
 Order.belongsTo(User, { as: 'user' });
+Order.hasMany(OrderDetail, { as: 'orderDetail' });
 
 Order.getById = id => Order.findOne({ where: { id } });
 

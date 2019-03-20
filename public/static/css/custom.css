@@ -115,3 +115,12 @@ th.action-col {
 input.short {
   width: 35px;
 }
+
+.no-fst-border tr:first-child td {
+  border-top: 0;
+}
+
+.no-fst-border tr td {
+  padding-top: 0;
+  padding-left: 0;
+}

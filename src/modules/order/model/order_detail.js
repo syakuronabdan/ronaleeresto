@@ -49,8 +49,7 @@ const OrderDetail = sequelize.define('order_detail', {
   paranoid: true,
 });
 
-OrderDetail.belongsTo(Order, { as: 'order' });
-OrderDetail.belongsTo(Food, { as: 'food' });
+OrderDetail.belongsTo(Food, { as: 'food', foreignKey: 'food_id' });
 
 OrderDetail.getById = id => OrderDetail.findOne({ where: { order_id: id } });
 

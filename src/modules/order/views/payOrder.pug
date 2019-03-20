@@ -15,28 +15,26 @@ block content
               tbody
                 each detail in order.orderDetail
                   tr
-                    td= detail.food.name
-                    td x#{detail.quantity}
-            if order.comment !== ''
-              .row
-                .col-md-12.form-group
-                  textarea.form-control(rows="3" readonly)= order.comment
-            button.btn.btn-sm.btn-primary(onclick=`orderDone(${order.id})`) Done
+                    td #{detail.food.name} x#{detail.quantity}
+                    td Rp#{detail.unit_price*detail.quantity}
+            .row
+              .col-3
+                button.btn.btn-sm.btn-primary(onclick=`payOrder(${order.id})`) Paid
+              .col-9.text-right Rp#{order.total}
 
 block script
   script(src='/socket.io/socket.io.js')
   script(type='text/javascript').
-    function orderDone(id) {
+    function payOrder(id) {
       $.ajax({
         type: 'PATCH',
-        url: `/orders/cook/${id}`
+        url: `/orders/pay/${id}`
       })
         .done(function () {
           $('#order-'+id).remove();
         })
-        .fail(function (data) {
+        .fail(function () {
           alert('Something is wrong. Try again couple seconds later');
-          console.log(data);
           // $('.card-body:first').prepend('<div class="alert alert-dismissible fade show alert-danger" role="alert">' +
           //   '<button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>' +
           //   'Something is wrong. Try a couple seconds later' +
@@ -45,27 +43,22 @@ block script
         });
     }
 
-    function loadOrders(fromId) {
+    function loadOrders() {
       var lastIdOnBoard = Number($('#board').children().last().attr('id').replace('order-', ''));
-      // skip adding
-      if (fromId <= lastIdOnBoard) return;
-      $.get(`/orders/cookOrdersFrom/${lastIdOnBoard}`)
+      $.get(`/orders/payOrdersFrom/${lastIdOnBoard}`)
         .done(function (orders) {
           orders.forEach(function (order) {
-            if ($('#order-'+order.id).length) return;
+            if ($('#order-' + order.id).length) return;
             var html = '<div id="order-' + order.id + '" class="col-sm-12 col-md-4">' +
               '<div class="card"><div class="card-header">Table #' + order.table_num + '</div>' +
               '<div class="card-body"><table class="table table-responsive-sm no-fst-border"><tbody>';
             order.orderDetail.forEach(function (detail) {
-              html += '<tr><td>'+detail.food.name+'</td><td>x'+detail.quantity+'</td></tr>';
+              html += '<tr><td>' + detail.food.name + ' x'+detail.quantity+'</td><td>Rp' + detail.unit_price*detail.quantity + '</td></tr>';
             });
-            html += '</tbody></table>';
-            if (order.comment !== '') {
-              html += '<div class="row"><div class="col-md-12 form-group">' +
-                '<textarea class="form-control" rows="3" readonly="">'+order.comment+'</textarea></div></div>'
-            }
-            html += '<button class="btn btn-sm btn-primary" onclick="orderDone('+order.id+')">Done</button>' +
-              '</div></div></div>';
+            html += '</tbody></table><div class="row"><div class="col-3">' +
+              '<button class="btn btn-sm btn-primary" onclick="orderDone(' + order.id + ')">Paid</button></div>' +
+              '<div class="col-9 text-right">Rp'+order.total+'</div>' +
+              '</div></div></div></div>';
             $('#board').append(html);
           });
         });
@@ -73,7 +66,10 @@ block script
 
     $(function () {
       var socket = io.connect('http://localhost:4000');
-      socket.on('newOrder', function(data){loadOrders(data.orderId)});
+      socket.on('cookedOrder', function (data) {
+        loadOrders(data.orderId)
+        console.log(data);
+      });
       socket.on('error', function (err) {
         console.log(err);
       });

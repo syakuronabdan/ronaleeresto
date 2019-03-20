@@ -58,6 +58,7 @@ const apiResponse = function apiResponse() {
       data.input = Object.keys(input).map(name => ({ name, val: input[name] }));
       data.link = link;
     }
+    console.log(`${code} ${status}`);
     return res.json({
       code,
       status,

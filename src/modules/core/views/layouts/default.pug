@@ -55,6 +55,16 @@ html(lang='en')
                 a.nav-link.nav-title(href='/orders')
                   i.icon-book-open
                   | Order
+              if userRole === roleList.CASHIER
+                li.nav-item
+                  a.nav-link.nav-title(href='/orders/pay')
+                    i.icon-drawer
+                    | Payment
+            if userRole === roleList.COOK
+              li.nav-item
+                a.nav-link.nav-title(href='/orders/cook')
+                  i.icon-book-open
+                  | Orders
 
       main.main
         ol.breadcrumb
